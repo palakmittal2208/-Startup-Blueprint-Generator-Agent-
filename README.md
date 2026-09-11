@@ -26,7 +26,7 @@ Building a startup plan from scratch can take weeks. This application bridges th
    cd Startup-Blueprint-Generator-Agent
 3. Install dependencies: 
    pip install -r requirements.txt
-4. Set up your environment variables in a .env file.
+4. Set up environment variables in a .env file.
 5. Run the application: 
    python app.py
    
