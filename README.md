@@ -6,7 +6,7 @@ An advanced, AI-powered web application designed to help entrepreneurs instantly
 Building a startup plan from scratch can take weeks. This application bridges that gap by leveraging cutting-edge IBM watsonx Granite language models to transform a simple text description of a startup concept into a professional, concise, and actionable business blueprint.
 
 ## 💡 Sample Startup Idea Tested
-* **Concept**: An edtech app that teaches coding to kids aged 8-14 through gamified AI-powered lessons, adapting difficulty based on the child's learning pace.
+* **Concept**:
 
 ## ✨ Key Features
 * **AI-Driven Intelligence**: Powered by IBM watsonx for deep, context-aware business analysis.
