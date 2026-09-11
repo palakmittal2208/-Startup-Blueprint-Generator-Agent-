@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Startup Blueprint Generator — Powered by IBM watsonx</title>
+  <meta name="description" content="Transform your startup idea into a complete, actionable business blueprint powered by IBM watsonx AI." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="bg-mesh"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <!-- SVG Gradient Definitions -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="#4f8ef7" />
+        <stop offset="100%" stop-color="#8b5cf6" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="wrapper">
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <a class="nav-logo" href="#">
+        <div class="nav-logo-icon">🚀</div>
+        BlueprintAI
+      </a>
+      <span class="nav-badge">IBM watsonx Powered</span>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <p class="hero-eyebrow">AI-Powered Startup Consulting</p>
+      <h1 class="hero-title">
+        Turn Your Idea Into a<br>
+        <span class="gradient-text">Complete Business Blueprint</span>
+      </h1>
+      <p class="hero-subtitle">
+        Describe your startup concept in plain language. Our RAG-powered AI agent — backed by IBM watsonx Granite — instantly generates a full business plan, market analysis, funding roadmap, and 90-day action plan.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-value">12+</span>
+          <span class="stat-label">Blueprint Sections</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">60s</span>
+          <span class="stat-label">Avg Generation Time</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">100%</span>
+          <span class="stat-label">Tailored to Your Idea</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Chips -->
+    <div class="features">
+      <div class="feature-chip">
+        <span class="feature-chip-icon">📊</span>
+        <div class="feature-chip-title">Market Research</div>
+        <div class="feature-chip-desc">TAM, trends & competitor analysis</div>
+      </div>
+      <div class="feature-chip">
+        <span class="feature-chip-icon">💰</span>
+        <div class="feature-chip-title">Funding Strategy</div>
+        <div class="feature-chip-desc">Grants, VCs & go-to-market plan</div>
+      </div>
+      <div class="feature-chip">
+        <span class="feature-chip-icon">⚖️</span>
+        <div class="feature-chip-title">Legal & Compliance</div>
+        <div class="feature-chip-desc">Entity type, IP & regulatory guide</div>
+      </div>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card input-section" id="inputCard">
+      <label class="input-label" for="ideaInput">Describe Your Startup Idea</label>
+
+      <div class="input-wrapper">
+        <textarea
+          id="ideaInput"
+          class="idea-textarea"
+          placeholder="e.g. An AI-powered platform that helps small restaurants reduce food waste by predicting daily demand and automatically adjusting inventory orders…"
+          maxlength="2000"
+          rows="5"
+        ></textarea>
+        <span class="char-counter" id="charCounter">0 / 2000</span>
+      </div>
+
+      <!-- Example Pills -->
+      <div class="examples">
+        <span class="examples-label">Try:</span>
+        <button class="example-pill" data-idea="A SaaS platform that uses AI to automate legal document review and contract management for small law firms and solo practitioners.">⚖️ LegalTech SaaS</button>
+        <button class="example-pill" data-idea="A marketplace connecting freelance healthcare professionals with rural clinics that face doctor shortages, using telemedicine and mobile-first design.">🏥 HealthTech Marketplace</button>
+        <button class="example-pill" data-idea="An edtech app that teaches coding to kids aged 8–14 through gamified AI-powered lessons, adapting difficulty based on the child's learning pace.">🎮 EdTech for Kids</button>
+        <button class="example-pill" data-idea="A B2B fintech platform that provides embedded buy-now-pay-later financing solutions for B2B transactions between manufacturers and distributors.">💳 B2B FinTech</button>
+        <button class="example-pill" data-idea="A sustainability platform that helps e-commerce brands measure, reduce, and offset their carbon footprint with real-time supply chain analytics.">🌱 GreenTech</button>
+      </div>
+
+      <button class="btn-generate" id="generateBtn" onclick="generateBlueprint()">
+        <span class="btn-text">⚡ Generate My Blueprint</span>
+        <span class="btn-spinner"></span>
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="card loading-state" id="loadingState">
+      <div class="loading-ring">
+        <svg viewBox="0 0 64 64">
+          <circle class="ring-track" cx="32" cy="32" r="28"/>
+          <circle class="ring-progress" cx="32" cy="32" r="28"
+            stroke="url(#ringGrad)" stroke-dasharray="100 76" stroke-dashoffset="0"/>
+        </svg>
+      </div>
+      <p class="loading-text" id="loadingText">Analyzing your startup idea…</p>
+      <div class="loading-steps">
+        <div class="loading-step active" id="step1">
+          <span class="step-dot"></span>
+          Retrieving market intelligence &amp; industry data
+        </div>
+        <div class="loading-step" id="step2">
+          <span class="step-dot"></span>
+          Mapping business model &amp; revenue streams
+        </div>
+        <div class="loading-step" id="step3">
+          <span class="step-dot"></span>
+          Analyzing competitors &amp; funding landscape
+        </div>
+        <div class="loading-step" id="step4">
+          <span class="step-dot"></span>
+          Drafting go-to-market strategy &amp; legal plan
+        </div>
+        <div class="loading-step" id="step5">
+          <span class="step-dot"></span>
+          Compiling your 90-day action roadmap
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" id="errorState">
+      <div class="error-box">
+        <span class="error-icon">⚠️</span>
+        <div class="error-message">
+          <strong id="errorTitle">Something went wrong</strong>
+          <span id="errorText">Please try again.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Section -->
+    <div class="result-section" id="resultSection">
+      <div class="result-header">
+        <div class="result-title">
+          <span class="result-title-dot"></span>
+          Your Startup Blueprint
+        </div>
+        <div class="result-actions">
+          <button class="btn-icon" onclick="copyBlueprint()" id="copyBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy
+          </button>
+          <button class="btn-icon" onclick="downloadBlueprint()" id="downloadBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
+          <button class="btn-icon" onclick="resetForm()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+            New Idea
+          </button>
+        </div>
+      </div>
+
+      <div class="blueprint-content" id="blueprintContent">
+        <!-- Generated blueprint rendered here -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Built with <span>IBM watsonx Granite</span> &nbsp;·&nbsp; Startup Blueprint Generator &nbsp;·&nbsp; AI-powered business consulting
+    </footer>
+
+  </div><!-- /wrapper -->
+
+  <script>
+    /* =====================================================
+       Startup Blueprint Generator — Frontend JavaScript
+       ===================================================== */
+
+    const textarea      = document.getElementById('ideaInput');
+    const charCounter   = document.getElementById('charCounter');
+    const generateBtn   = document.getElementById('generateBtn');
+    const inputCard     = document.getElementById('inputCard');
+    const loadingState  = document.getElementById('loadingState');
+    const errorState    = document.getElementById('errorState');
+    const resultSection = document.getElementById('resultSection');
+    const blueprintEl   = document.getElementById('blueprintContent');
+
+    let rawBlueprint    = '';
+    let currentIdea     = '';
+
+    // ---------- Character Counter ----------
+    textarea.addEventListener('input', () => {
+      const len = textarea.value.length;
+      charCounter.textContent = `${len} / 2000`;
+      charCounter.className = 'char-counter';
+      if (len > 1800) charCounter.classList.add('over');
+      else if (len > 1500) charCounter.classList.add('warn');
+    });
+
+    // ---------- Example Pills ----------
+    document.querySelectorAll('.example-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        textarea.value = btn.dataset.idea;
+        textarea.dispatchEvent(new Event('input'));
+        textarea.focus();
+      });
+    });
+
+    // ---------- Animated Loading Steps ----------
+    const steps = ['step1','step2','step3','step4','step5'];
+    const stepDuration = 4500; // ms per step
+    let stepInterval = null;
+    let currentStep  = 0;
+
+    function startLoadingSteps() {
+      currentStep = 0;
+      steps.forEach(id => {
+        const el = document.getElementById(id);
+        el.className = 'loading-step';
+      });
+      document.getElementById(steps[0]).classList.add('active');
+
+      stepInterval = setInterval(() => {
+        if (currentStep < steps.length - 1) {
+          document.getElementById(steps[currentStep]).classList.replace('active','done');
+          currentStep++;
+          document.getElementById(steps[currentStep]).classList.add('active');
+        }
+      }, stepDuration);
+    }
+
+    function stopLoadingSteps() {
+      clearInterval(stepInterval);
+      steps.forEach(id => {
+        document.getElementById(id).classList.remove('active');
+      });
+    }
+
+    // ---------- UI State Helpers ----------
+    function showLoading() {
+      inputCard.style.display    = 'none';
+      errorState.classList.remove('visible');
+      resultSection.classList.remove('visible');
+      loadingState.classList.add('visible');
+      startLoadingSteps();
+    }
+
+    function hideLoading() {
+      loadingState.classList.remove('visible');
+      stopLoadingSteps();
+    }
+
+    function showError(title, message) {
+      hideLoading();
+      inputCard.style.display = 'block';
+      generateBtn.disabled    = false;
+      generateBtn.classList.remove('loading');
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorText').textContent  = message;
+      errorState.classList.add('visible');
+      errorState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showResult(text) {
+      hideLoading();
+      rawBlueprint = text;
+      blueprintEl.innerHTML = renderMarkdown(text);
+      resultSection.classList.add('visible');
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetForm() {
+      resultSection.classList.remove('visible');
+      errorState.classList.remove('visible');
+      loadingState.classList.remove('visible');
+      inputCard.style.display = 'block';
+      generateBtn.disabled    = false;
+      generateBtn.classList.remove('loading');
+      textarea.focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------- Markdown → HTML (lightweight) ----------
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderMarkdown(md) {
+      let lines = md.split('\n');
+      let html  = '';
+      let inList = false;
+      let inOl   = false;
+      let inTable = false;
+      let tableRows = [];
+
+      function flushList() {
+        if (inList)  { html += '</ul>'; inList = false; }
+        if (inOl)    { html += '</ol>'; inOl   = false; }
+      }
+      function flushTable() {
+        if (!inTable || tableRows.length === 0) return;
+        let tHtml = '<table>';
+        tableRows.forEach((row, idx) => {
+          const cells = row.split('|').map(c => c.trim()).filter(c => c !== '');
+          if (idx === 0) {
+            tHtml += '<tr>' + cells.map(c => `<th>${inlineFormat(c)}</th>`).join('') + '</tr>';
+          } else if (row.match(/^[\|\s\-:]+$/)) {
+            // separator row — skip
+          } else {
+            tHtml += '<tr>' + cells.map(c => `<td>${inlineFormat(c)}</td>`).join('') + '</tr>';
+          }
+        });
+        tHtml += '</table>';
+        html += tHtml;
+        inTable = false;
+        tableRows = [];
+      }
+
+      lines.forEach(line => {
+        // Horizontal rules
+        if (/^---+$/.test(line.trim())) {
+          flushList(); flushTable();
+          html += '<hr>'; return;
+        }
+        // Tables
+        if (line.trim().startsWith('|')) {
+          flushList();
+          inTable = true;
+          tableRows.push(line.trim());
+          return;
+        } else if (inTable) {
+          flushTable();
+        }
+        // Headings
+        const h2 = line.match(/^## (.+)/);
+        const h3 = line.match(/^### (.+)/);
+        const h4 = line.match(/^#### (.+)/);
+        if (h2) { flushList(); html += `<h2>${inlineFormat(h2[1])}</h2>`; return; }
+        if (h3) { flushList(); html += `<h3>${inlineFormat(h3[1])}</h3>`; return; }
+        if (h4) { flushList(); html += `<h4>${inlineFormat(h4[1])}</h4>`; return; }
+        // Unordered list
+        const ulMatch = line.match(/^[\-\*\+] (.+)/);
+        if (ulMatch) {
+          if (inOl) { html += '</ol>'; inOl = false; }
+          if (!inList) { html += '<ul>'; inList = true; }
+          html += `<li>${inlineFormat(ulMatch[1])}</li>`;
+          return;
+        }
+        // Ordered list
+        const olMatch = line.match(/^\d+\. (.+)/);
+        if (olMatch) {
+          if (inList) { html += '</ul>'; inList = false; }
+          if (!inOl) { html += '<ol>'; inOl = true; }
+          html += `<li>${inlineFormat(olMatch[1])}</li>`;
+          return;
+        }
+        // Regular paragraph
+        flushList();
+        const trimmed = line.trim();
+        if (trimmed === '') {
+          html += '';
+        } else {
+          html += `<p>${inlineFormat(trimmed)}</p>`;
+        }
+      });
+
+      flushList();
+      flushTable();
+      return html;
+    }
+
+    function inlineFormat(text) {
+      return text
+        // Escape HTML first
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        // Bold + italic
+        .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // Italic
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // Remove emoji in headings if preferred (keep for now)
+        ;
+    }
+
+    // ---------- Copy Blueprint ----------
+    async function copyBlueprint() {
+      const btn = document.getElementById('copyBtn');
+      try {
+        await navigator.clipboard.writeText(rawBlueprint);
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+        setTimeout(() => {
+          btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy`;
+        }, 2000);
+      } catch {
+        btn.textContent = 'Failed';
+      }
+    }
+
+    // ---------- Download Blueprint ----------
+    function downloadBlueprint() {
+      const clean = `STARTUP BLUEPRINT\nGenerated by BlueprintAI powered by IBM watsonx\nIdea: ${currentIdea}\n\n${'='.repeat(60)}\n\n${rawBlueprint}`;
+      const blob = new Blob([clean], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'startup-blueprint.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ---------- Main Generate Function ----------
+    async function generateBlueprint() {
+      const idea = textarea.value.trim();
+
+      // Client-side validation
+      if (!idea) {
+        textarea.focus();
+        textarea.style.borderColor = '#ef4444';
+        textarea.style.boxShadow   = '0 0 0 3px rgba(239,68,68,0.15)';
+        setTimeout(() => {
+          textarea.style.borderColor = '';
+          textarea.style.boxShadow   = '';
+        }, 1800);
+        return;
+      }
+
+      if (idea.length < 10) {
+        showError('Too Short', 'Please provide at least 10 characters describing your startup idea.');
+        return;
+      }
+
+      currentIdea = idea;
+      errorState.classList.remove('visible');
+      generateBtn.disabled = true;
+      generateBtn.classList.add('loading');
+
+      showLoading();
+
+      try {
+        const res = await fetch('/generate', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ idea })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          showError('Generation Failed', data.error || `Server error (${res.status}). Please try again.`);
+          return;
+        }
+
+        showResult(data.blueprint);
+
+      } catch (err) {
+        showError('Network Error', 'Could not reach the server. Please check your connection and try again.');
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.classList.remove('loading');
+      }
+    }
+
+    // Allow Ctrl+Enter / Cmd+Enter to submit
+    textarea.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        generateBlueprint();
+      }
+    });
+
+    // Animate feature chips on scroll (Intersection Observer)
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity    = '1';
+          entry.target.style.transform  = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-chip').forEach((chip, i) => {
+      chip.style.opacity   = '0';
+      chip.style.transform = 'translateY(16px)';
+      chip.style.transition = `opacity 0.5s ${i * 0.1}s ease, transform 0.5s ${i * 0.1}s ease`;
+      observer.observe(chip);
+    });
+  </script>
+</body>
+</html>
