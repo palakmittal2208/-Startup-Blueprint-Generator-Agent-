@@ -29,3 +29,18 @@ Building a startup plan from scratch can take weeks. This application bridges th
 4. Set up your environment variables in a .env file.
 5. Run the application: 
    python app.py
+   
+ ## ⚠️ Challenges Faced & Troubleshooting (IBM watsonx AI Integration)
+
+During the development and testing of the live web application, we encountered a few technical hurdles related to the AI model's response generation:
+
+* **Infinite Loop & Repetition Issue:** 
+  * While processing certain prompts, the application occasionally got caught in a repetitive loop, generating overlapping or redundant sentences instead of moving forward with the blueprint text.
+  * *Cause:* This happened due to prompt formatting or response stream handling where the model kept repeating tokens without a proper exit condition.
+
+* **Incomplete / Truncated Outputs:** 
+  * The generated startup blueprints were sometimes cutting off midway and failing to display the complete content.
+  * *Cause:* The `max_new_tokens` parameter limit was initially too low for comprehensive text generation, causing the model to stop abruptly before finishing the response.
+
+* **Resolution:** 
+  * Adjusted the model generation parameters (increasing token limits and optimizing prompt structure) in the backend code to ensure clean, continuous, and non-repeating outputs from IBM watsonx.
