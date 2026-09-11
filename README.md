@@ -21,7 +21,7 @@ Building a startup plan from scratch can take weeks. This application bridges th
 
 ## ⚙️ Installation & Setup Guide
 1. Clone the repository: 
-   git clone https://github.com/palakmittal2208/Startup-Blueprint-Generator-Agent.git
+   git clone https://https://github.com/palakmittal2208/-Startup-Blueprint-Generator-Agent-
 2. Navigate into the folder: 
    cd Startup-Blueprint-Generator-Agent
 3. Install dependencies: 
